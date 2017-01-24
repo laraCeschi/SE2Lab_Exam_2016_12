@@ -78,3 +78,74 @@ describe("Test /searchStudent", function() {
 
 
 });
+
+// Test for /searchStudent
+describe("Test /deleteStudent", function() {
+	//set the data
+	var data = {ID: '1'};
+	var ssn = {SSN: 'AB45'};
+    
+	//legal request for ID
+	it("to returns status code 200", function(done) {
+	  client.post(base_url + "searchStudent/", data, function(err, res, body) {
+		expect(body).toEqual(
+			{
+				ID: "1",
+				SSN: "AB45", 
+				name: "Mattia",
+				address: "via Roma",
+				mark: "5"
+			}
+		);
+
+		done();
+	  });
+	});
+    
+    // legal request for SSN
+    it("to returns status code 200", function(done) {
+	  client.post(base_url + "searchStudent/", ssn, function(err, res, body) {
+		expect(body).toEqual(
+			{
+				ID: "1",
+				SSN: "AB45", 
+				name: "Mattia",
+				address: "via Roma",
+				mark: "5"
+			}
+		);
+
+		done();
+	  });
+	});
+	
+	//student non existing ID
+	data1 = {ID: "10" };
+	it("to returns status code 406", function(done) {
+	  client.post(base_url + "searchStudent/", data1, function(err, res, body) {
+		expect(res.statusCode).toBe(404);
+		done();
+	  });
+	});
+    
+    //student non existing SSN
+    ssn1 = {SSN: 'a'};
+    it("to returns status code 406", function(done) {
+	  client.post(base_url + "searchStudent/", ssn1, function(err, res, body) {
+		expect(res.statusCode).toBe(404);
+		done();
+	  });
+	});
+	
+	//wrong parameter
+	data2 = {name: "1" };
+	it("to returns status code 406", function(done) {
+	  client.post(base_url + "searchStudent/", data2, function(err, res, body) {
+		expect(res.statusCode).toBe(406);
+		expect(body).toBe(1);
+		done();
+	  });
+	});
+
+
+});

@@ -167,7 +167,7 @@ app.post('/deleteStudent', function(request, response)
 	else if (studentSSN!="not defined" && studentSSN!="body undefined")
 	{	
 		//aceptable input
-		//delete a student using ID
+		//delete a student using SSN
 		student = studentManager.deleteStudentSSN(studentSSN);
 		if (student!= null)
 		{
@@ -272,3 +272,59 @@ app.listen(app.get('port'), function() {
 });
 
 //AGGIUNGERE QUI SOTTO NUOVE FUNZIONI
+
+/**
+ * @brief search a student
+ * @return search a student using two parameters, one of them optional
+ */
+app.post('/searchByMark', function(request, response) 
+{
+	var headers = {};
+	headers["Access-Control-Allow-Origin"] = "*";
+	headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
+	headers["Access-Control-Allow-Credentials"] = false;
+	headers["Access-Control-Max-Age"] = '86400'; // 24 hours
+	headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept";
+	headers["Content-Type"] = "application/json";
+
+	var criterion;
+	
+	//check body and parameters
+	if ( typeof request.body !== 'undefined' && request.body) {
+		if ( typeof request.body.criteria !== 'undefined' && request.body.criteria) {
+			 criterion = request.body.criteria;
+            }
+		else 
+			criterion = "not defined";
+	
+	}
+	else {
+		criterion = "body undefined";
+	}
+    
+    if (criterion!="not defined" && criterion!="body undefined")
+	{
+		//aceptable input
+		//search for students
+		var students = studentManager.searchByMark(criterion);
+		//if exists
+		if (students != null)
+		{
+			response.writeHead(200, headers);
+			response.end(JSON.stringify(students));
+		}
+		else
+		{
+			response.writeHead(404, headers);
+			response.end(JSON.stringify());
+		}
+
+	}
+    else    
+	{
+		//unaceptable input
+		response.writeHead(406, headers);
+		response.end(JSON.stringify("1"));
+	}   
+
+});

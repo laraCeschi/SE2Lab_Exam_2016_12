@@ -22,7 +22,7 @@ paths:
           
   /searchStudent:
     post:
-      summary: search a student
+      summary: search for a student
       description: it returns the name of a student, given his/her ID
       parameters:
         - name: ID
@@ -47,7 +47,7 @@ paths:
   /deleteStudent:
     post:
       summary: delete a student
-      description: it returns the name of a student, given his/her ID or SSN
+      description: it returns the student object that has been deleted or null, if the student didn't exist.
       parameters:
         - name: ID
           in: formData
@@ -61,7 +61,7 @@ paths:
           type: string
       responses:
         200:
-          description: name of the student
+          description: object of the student
           schema: 
             $ref: "#/definitions/student"
         406:
